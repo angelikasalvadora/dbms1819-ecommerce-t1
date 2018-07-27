@@ -1,0 +1,111 @@
+<br>
+<br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="well well-sm">
+                {{msg}}
+                  <form method='POST' action="/contact">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">
+                                Name</label>
+                            <input type="text" class="form-control" name="name1"  placeholder="Enter name" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">
+                                Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
+                                </span>
+                                <input type="email" class="form-control" name="email1"  placeholder="Enter email" required="required" /></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">
+                                Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span>
+                                </span>
+                                <input type="phone" class="form-control" name="phone1"  placeholder="Enter phone number" required="required" /></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">
+                                Subject</label>
+                            <select id="subject" name="subject" class="form-control" required="required">
+                                <option value="na" selected="">Choose One:</option>
+                                <option value="service">General Customer Service</option>
+                                <option value="suggestions">Order</option>
+                                <option value="product">Product Support</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                          <label for="name">
+                              Product</label>
+                          <textarea name="product1"  class="form-control" rows="1" cols="25" required="required"
+                              placeholder="Enter Product ID"></textarea>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="name">
+                            Quantity </label>
+                          <textarea name="quantity1"  class="form-control" rows="1" cols="25" required="required"
+                              placeholder="Enter Quantity"></textarea>
+                      </div>
+
+                        <div class="form-group">
+                            <label for="name">
+                                Message</label>
+                            <textarea name="message1" class="form-control" rows="5" cols="25" required="required"
+                                placeholder="Message"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary pull-right" >
+                            Submit</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <form>
+            <legend><span class="glyphicon glyphicon-globe"></span> Our office</legend>
+            <address>
+                <strong>NS, Inc.</strong><br>
+                795 Folsom Ave, Suite 600<br>
+                Bonifacio Global City, BHS 1208<br>
+                (123) 456-7890
+            </address>
+            <address>
+                <strong>Email</strong><br>
+                <a href="mailto:#">angelika.salvadora@gmail.com</a>
+            </address>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<style>
+.jumbotron {
+background: #358CCE;
+color: #FFF;
+border-radius: 0px;
+}
+.jumbotron-sm { padding-top: 24px;
+padding-bottom: 24px; }
+.jumbotron small {
+color: #FFF;
+}
+.h1 small {
+font-size: 24px;
+}
+</style>
