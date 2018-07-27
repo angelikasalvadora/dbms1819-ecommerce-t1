@@ -7,11 +7,12 @@ var {Client} = require('pg');
 
 
 var client = new Client({
-  database:'productlist',
-  user: 'postgres',
-  password: 'xxreallay',
-  host:'localhost',
-  port: 5432
+  database:'detdajekraf8p9',
+  user: 'lclezoprxxuvik',
+  password: 'f62d35218f6378aaa13241a8d899099874d0f1c3d8f220994481ff3dcc5e60a1',
+  host:'ec2-50-17-189-165.compute-1.amazonaws.com',
+  port: 5432,
+  ssl:true
 });
 
 
