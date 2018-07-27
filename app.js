@@ -153,22 +153,21 @@ app.get('/contact',(req,res)=> {
 
           // create reusable transporter object using the default SMTP transport
       let transporter = nodemailer.createTransport({
-          service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
         //  host: 'localhost',
-          secure: false, // true for 465, false for other ports
+
           auth: {
-              user: 'princeszayaka@gmail.com', // generated ethereal user
-              pass: 'aishiteruanimee0901122' // generated ethereal password
+              user: 'nstechnohub@gmail.com', // generated ethereal user
+              pass: '@kquku8m4' // generated ethereal password
           },
-          tls:{
-            rejectUnauthorized:false
-          }
       });
 
       // setup email data with unicode symbols
       let mailOptions = {
-          from: '"NS Technohub, Inc" <princeszayaka@gmail.com>', // sender address
-          to: 'princeszayaka@gmail.com', // list of receivers
+          from: '"NS Technohub, Inc" <nstechnohub@gmail.com>', // sender address
+          to: 'nstechnohub@gmail.com', // list of receivers
           subject: 'Team 1 - ECommerce Web App Order Request', // Subject line
           text: 'Hello world?', // plain text body
           html: output  // html body
