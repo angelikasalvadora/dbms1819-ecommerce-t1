@@ -6,26 +6,45 @@ var nodemailer = require('nodemailer');
 var {Client} = require('pg');
 
 
+/*var client = new Client({
+  database:'productlist',
+  user: 'postgres',
+  password: 'xxreallay',
+  host:'localhost',
+  port: 5432
+}); */
+
 var client = new Client({
   database:'detdajekraf8p9',
   user: 'lclezoprxxuvik',
   password: 'f62d35218f6378aaa13241a8d899099874d0f1c3d8f220994481ff3dcc5e60a1',
   host:'ec2-50-17-189-165.compute-1.amazonaws.com',
   port: 5432,
-  ssl:true
+  ssl: true
 });
 
+/*var connect = 'lclezoprxxuvik://lclezoprxxuvik:f62d35218f6378aaa13241a8d899099874d0f1c3d8f220994481ff3dcc5e60a1@ec2-50-17-189-165.compute-1.amazonaws.com:5432/detdajekraf8p9';
+*/
 
-client.connect();
+/*client.connect()
+  .then(function(){
+    console.log('connected to database')
+  })
+  .catch(function(err){
+    console.log('cannot connect to database!')
+  });*/
+
+client.connect()
+.then(function(){
+  console.log('connected to database')
+})
+.catch(function(err){
+  console.log('cannot connect to database!')
+});
 
 var app = express();
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
-
-//DB CONNECT STRING
-var connect = 'postgres://postgres:xxreallay@localhost:5432/productlist';
-
 
 
 //HANDLE BARS
@@ -177,7 +196,6 @@ app.get('/contact',(req,res)=> {
     });
 
 
-
 //Set Static path
 /*app.use(express.static(path.join(__dirname, 'public')));
 
@@ -189,3 +207,4 @@ app.get('/', function(req, res){
 
 //SERVER
 app.listen(process.env.PORT||8000);
+  console.log('Server started on port 8000.')
