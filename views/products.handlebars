@@ -1,0 +1,132 @@
+<!-- SECTION -->
+
+	<div class="section">
+      	{{#each data}}
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- Product main img -->
+					<div class="col-md-5 col-md-push--1">
+						<div id="product-main-img">
+							<div class="product-preview">
+								<img src="{{this.images}}" alt="">
+							</div>
+						</div>
+					</div>
+				<!-- Product details -->
+					<div class="col-md-5">
+						<div class="product-details">
+							<h2 class="product-name" style="font-weight:bold;">{{this.name}}</h2>
+							<div>
+								<div class="product-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
+							</div>
+							<div>
+								<h3 class="product-price">₱{{this.price}}.00 </h3>
+
+							</div>
+							<p style="font-size:15px;">{{this.description}}</p>
+
+              <div class="product-options">
+              <label>
+                Product ID:
+                <input type="text" id="myInput" value="{{this.id}}" class="form-control" required="" readonly="">
+                <button onclick="myFunction()"><h5>Click to copy Product ID</h5></button>
+              </label>
+              </div>
+
+							<div class="product-options">
+								<label>
+									Quantity Available:
+                  <input type="text" value="{{this.quantity}}" class="form-control" required="" readonly="">
+								</label>
+							</div>
+
+							<div class="add-to-cart">
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i><a href="/contact"> Order</a></button>
+							</div>
+
+							<ul class="product-links">
+								<li>Category:</li>
+								<li><a href="#">{{this.type}}</a></li>
+                <li>Brand:</li>
+                <li><a href="#">{{this.brand}}</a></li>
+							</ul>
+
+							<ul class="product-links">
+								<li>Share:</li>
+								<li><a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="https://www.twitter.com"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="https://www.googleplus.com"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="https://www.gmail.com"><i class="fa fa-envelope"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- /Product details -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+{{/each}}
+
+
+
+
+
+
+<!-- <div class="container pb-5 mb-5">
+	<div class="jumbotron mt-2">
+		<h2>Contact Form</h2>
+		<h4>{{msg}}</h4>
+		{{#each data}}
+		<form method="POST" action="{{this.id}}/send">
+			<div class="controls">
+				<div class="form-group">
+					<label class="control-label" for="name">Name *</label>
+					<div>
+						<input id="name" name="name" type="text" placeholder="Juan Dela Cruz" class="form-control" required="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="phone">Phone *</label>
+					<div>
+						<input id="phone" name="phone" type="number" placeholder="09234567890" class="form-control" required="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="email">Email *</label>
+					<div>
+						<input id="email" name="email" type="text" placeholder="jdelacruz@gmail.com" class="form-control" required="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="productid">Product ID</label>
+					<div>
+						<input id="productid" name="productid" type="text" value="{{this.id}}" class="form-control" required="" readonly="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="quantity">Quantity *</label>
+					<div>
+						<input id="quantity" name="quantity" type="number" placeholder="10" class="form-control" required="">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="text-center">
+						<button type="submit" class="btn btn-primary btn-lg" title="Submit contact form">
+						Submit
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		{{/each}}
+	</div>
+</div> -->

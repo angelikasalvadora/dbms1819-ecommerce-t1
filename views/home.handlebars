@@ -61,7 +61,7 @@
 <!-- STORE -->
 
 <div class="container">
-          {{#rows}}
+        {{#each data}}
 					<div id="store" class="col">
 						<!-- store products -->
 						<div class="row">
@@ -69,12 +69,12 @@
 							<div class="col-md-4 col-xs-6">
 								<div class="product">
 									<div class="product-img">
-										<img src={{images}} alt="">
+										<img src={{this.images}} alt="">
 
 									</div>
 									<div class="product-body">
-										<p class="product-category">Product ID: {{id}}</p>
-										<h3 class="product-name" id="product1"><a href="#">{{name}}</a></h3>
+										<p class="product-category">Product ID: {{this.id}}</p>
+										<h3 class="product-name" id="product1"><a href="#">{{this.name}}</a></h3>
 										<h4 class="product-price"> ₱{{price}}.00 </h4>
 										<div class="product-rating">
 											<i class="fa fa-star"></i>
@@ -86,7 +86,7 @@
 
 									</div>
 									<div class="add-to-cart" id="order22">
-										<button class="btn-btn-info"><i class="fa fa-shopping-cart"></i> <a href="/contact">Order Now</a></button>
+										<button class="btn-btn-info"><i class="fa fa-shopping-cart"></i> <a href="/products/{{this.id}}">Select Product</a></button>
 									</div>
 								</div>
 							</div>
@@ -148,7 +148,7 @@
 					</div>
 					<!-- /STORE -->
 
-{{/rows}}
+{{/each}}
 </div>
 
 

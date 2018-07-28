@@ -83,18 +83,32 @@ app.use(bodyParser.urlencoded({extended:false}));
 }); */
 
 //PG Connect
-app.get('/',(req,res)=>{
+app.get('/', function(req,res) {
+	client.query('SELECT * FROM products', (req, data)=>{
+		var list = [];
+		for (var i = 0; i < data.rows.length; i++) {
+			list.push(data.rows[i]);
+		}
+		res.render('home',{
+			data: list,
+			title: 'Top Products'
+		});
+	});
+});
 
-       client.query('SELECT * FROM products ')
-
-      .then((results)=>{
-        res.render('home', results);
-
-      })
-      .catch((err)=> {
-        console.log('error',err);
-        res.send('Error!');
-      });
+    app.get('/products/:id', (req,res)=>{
+    	var id = req.params.id;
+    	client.query('SELECT * FROM products', (req, data)=>{
+    		var list = [];
+    		for (var i = 0; i < data.rows.length+1; i++) {
+    			if (i==id) {
+    				list.push(data.rows[i-1]);
+    			}
+    		}
+    		res.render('products',{
+    			data: list
+    		});
+    	});
     });
 
 // client.query('SELECT name FROM products WHERE id=1')
@@ -161,6 +175,7 @@ app.get('/contact',(req,res)=> {
         });
 
     app.post('/contact',function(req,res,next) {
+
           const output = `
           <p>You have a new order request</p>
           <h3>Order Details</h3>
@@ -206,7 +221,7 @@ app.get('/contact',(req,res)=> {
           console.log('Message sent: %s', info.messageId);
           // Preview only available when sending through an Ethereal account
           console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          res.render('contact',{msg:'Order Request Submitted'});
+          res.render('contact',{msg:'Order Request Submitted. Email sent to NS Technohub. '});
 
           // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
           // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...

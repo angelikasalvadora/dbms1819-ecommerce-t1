@@ -1,11 +1,14 @@
 <br>
 <br>
 
-<div class="container">
+<div class="container" id="con2">
+
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">
-                {{msg}}
+                <h4><center>{{msg}}</center></h4>
+                <br>
+
                   <form method='POST' action="/contact">
                 <div class="row">
                     <div class="col-md-6">
@@ -49,7 +52,7 @@
                           <label for="name">
                               Product</label>
                           <textarea name="product1"  class="form-control" rows="1" cols="25" required="required"
-                              placeholder="Enter Product ID"></textarea>
+                              placeholder="Paste Copied Product ID"></textarea>
                       </div>
 
                       <div class="form-group">
@@ -95,6 +98,10 @@
 
 
 <style>
+
+#con2{
+  font-size: 13px;
+}
 .jumbotron {
 background: #358CCE;
 color: #FFF;
