@@ -6,14 +6,6 @@ var nodemailer = require('nodemailer');
 var {Client} = require('pg');
 
 
-/*var client = new Client({
-  database:'productlist',
-  user: 'postgres',
-  password: 'xxreallay',
-  host:'localhost',
-  port: 5432
-}); */
-
 var client = new Client({
   database:'d7aqij9h90fga8',
   user: 'igqpslyjesqmxz',
@@ -23,16 +15,6 @@ var client = new Client({
   ssl: true
 });
 
-/*var connect = 'lclezoprxxuvik://lclezoprxxuvik:f62d35218f6378aaa13241a8d899099874d0f1c3d8f220994481ff3dcc5e60a1@ec2-50-17-189-165.compute-1.amazonaws.com:5432/detdajekraf8p9';
-*/
-
-/*client.connect()
-  .then(function(){
-    console.log('connected to database')
-  })
-  .catch(function(err){
-    console.log('cannot connect to database!')
-  });*/
 
 client.connect()
 .then(function(){
@@ -73,28 +55,6 @@ var people = /*['John','Sarah','Paul']; */ [
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-//THIS IS THE FIRST EVER APP.GET NA WORKING
-/*app.get('/', function(req,res){
-  res.render('home',{
-    content: 'This is some content',
-    published: true,
-    people: people
-  });
-}); */
-
-//PG Connect
-/* app.get('/', function(req,res) {
-	client.query('SELECT * FROM products', (req, data)=>{
-		var list = [];
-		for (var i = 0; i < data.rows.length; i++) {
-			list.push(data.rows[i]);
-		}
-		res.render('home',{
-			data: list,
-			title: 'Top Products'
-		});
-	});
-}); */
 
 app.get('/',(req, res)=>{
 
@@ -109,52 +69,20 @@ app.get('/',(req, res)=>{
 	});
 });
 
-    app.get('/products/:id', (req,res)=>{
-    	var id = req.params.id;
-    	client.query('SELECT * FROM products', (req, data)=>{
-    		var list = [];
-    		for (var i = 0; i < data.rows.length+1; i++) {
-    			if (i==id) {
-    				list.push(data.rows[i-1]);
-    			}
-    		}
-    		res.render('products',{
-    			data: list
-    		});
-    	});
-    });
-
-// client.query('SELECT name FROM products WHERE id=1')
-
-/*  app.get('/', function(req,res) {
-	client.query('SELECT * FROM Products', (req, data)=>{
-		var list = [];
-		for (var i = 0; i < data.rows.length; i++) {
-			list.push(data.rows[i]);
-		}
-		res.render('home',{
-			data: list,
-			title: 'Top Products'
-		});
-	});
-});
-
-app.get('/products/:id', (req,res)=>{
-	var id = req.params.id;
-	client.query('SELECT * FROM Products', (req, data)=>{
-		var list = [];
-		for (var i = 0; i < data.rows.length+1; i++) {
-			if (i==id) {
-				list.push(data.rows[i-1]);
-			}
-		}
-		res.render('products',{
-			data: list
-		});
-	});
-}); */
-
-
+  app.get('/products/:id', (req,res)=>{
+  	var id = req.params.id;
+  	client.query('SELECT * FROM products', (req, data)=>{
+  		var list = [];
+  		for (var i = 0; i < data.rows.length+1; i++) {
+  			if (i==id) {
+  				list.push(data.rows[i-1]);
+  			}
+  		}
+  		res.render('products',{
+  			data: list
+  		});
+  	});
+  });
 
 //ADD PRODUCTS
 app.get('/product/add',(req,res) => {
@@ -168,19 +96,6 @@ app.post('/product/add',function(req,res,next) {
       client.query(sql, params);
       res.redirect('/');
 });
-
-/*
-app.get('/contact',(req,res)=> {
-        res.render('contact');
-    });
-
-    app.post('/contact',function(req,res,next) {
-          console.log('post body', req.body);
-          var custo ='INSERT INTO customer (name,phone,email,quantity,product,message) VALUES ($7, $8, $9, $10, $11, $12)'
-          var mer = [req.body.name1,req.body.phone1,req.body.email1,req.body.quantity1,req.body.product1,req.body.message1];
-          client.query(custo, mer);
-          res.redirect('/');
-    }); */
 
 
     app.get('/products',(req,res) => {
@@ -246,16 +161,6 @@ app.get('/contact',(req,res)=> {
           client.query(custo, mer);
 
     });
-
-
-//Set Static path
-/*app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', function(req, res){
-  res.render('home' ,{
-    title: 'Customers'
-  });
-}); */
 
 //SERVER
 app.listen(process.env.PORT||8000);
