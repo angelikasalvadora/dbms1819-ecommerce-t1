@@ -15,10 +15,10 @@ var {Client} = require('pg');
 }); */
 
 var client = new Client({
-  database:'detdajekraf8p9',
-  user: 'lclezoprxxuvik',
-  password: 'f62d35218f6378aaa13241a8d899099874d0f1c3d8f220994481ff3dcc5e60a1',
-  host:'ec2-50-17-189-165.compute-1.amazonaws.com',
+  database:'d7aqij9h90fga8',
+  user: 'igqpslyjesqmxz',
+  password: '3caf29d9b8f26b23b77343c3a72c7b6a4b13cbf37917dc2615dd128032af213c',
+  host:'ec2-54-83-22-244.compute-1.amazonaws.com',
   port: 5432,
   ssl: true
 });
