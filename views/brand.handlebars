@@ -1,0 +1,32 @@
+<div class="container">
+        <div class="row centered-form">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+			    		<h3 class="panel-title"><b>Brands</b> </h3>
+			 			</div>
+              {{#each data}}
+			 			<div class="panel-body">
+			    			<h5><b>{{this.id}} - {{this.name}}</b></h5>
+                <h6>{{this.description}}</h5>
+			    	</div>
+            {{/each}}
+	    		</div>
+    		</div>
+    	</div>
+    </div>
+
+    <br>
+    <style>
+    body{
+    background-color: #525252;
+    }
+    .centered-form{
+    margin-top: 60px;
+    }
+
+    .centered-form .panel{
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+    }
+    </style>

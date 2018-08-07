@@ -37,6 +37,12 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Create Categories  -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 </head>
 <body>
 
@@ -54,7 +60,7 @@
   <li class="nav-item dropdown">
   	<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">   </a>
       <ul class="dropdown-menu">
-  	  <li><a class="dropdown-item" href="/product/add"> Add Product</a></li>
+  	  <li><a class="dropdown-item" href="/product/create"> Add Product</a></li>
   	  <li><a class="dropdown-item" href="/contact"> Order Product </a></li>
       </ul>
   </li>
@@ -76,8 +82,10 @@
 					<ul class="header-links pull-right">
 						<li><a href="/"><i class="fa fa-money"></i> PHP</a></li>
 						<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-            <li><a href="/"><i class="fa fa-truck"></i> Order Product</a></li>
-            <li><a href="/product/add"><i class="fa fa-shopping-bag"></i> Add Product</a></li>
+            <li><a href="/contact"><i class="fa fa-truck"></i> Order Product</a></li>
+            <li><a href="/product/create"><i class="fa fa-shopping-bag"></i> Add Product</a></li>
+            <li><a href="/brand/create"><i class="fa fa-download"></i> Create Brand</a></li>
+            <li><a href="/category/create"><i class="fa fa-check-square"></i> Create Category </a></li>
 					</ul>
 				</div>
 			</div>
@@ -151,12 +159,8 @@
     					<!-- NAV -->
     					<div class="main-nav">
     					<a href="/">Home</a> &nbsp  &nbsp  &nbsp  &nbsp
-    					<a href="#">Hot Deals</a>  &nbsp  &nbsp  &nbsp  &nbsp
-    					<a href="#">Categories</a> &nbsp  &nbsp  &nbsp  &nbsp
-    					<a href="#">Laptops</a> &nbsp  &nbsp  &nbsp  &nbsp
-    					<a href="#">Smartphones</a> &nbsp  &nbsp  &nbsp  &nbsp
-    					<a href="#">Cameras</a> &nbsp  &nbsp  &nbsp  &nbsp
-    					<a href="#">Accessories</a> &nbsp  &nbsp  &nbsp  &nbsp
+    					<a href="/brands">Brands</a>  &nbsp  &nbsp  &nbsp  &nbsp
+    					<a href="/categories">Categories</a> &nbsp  &nbsp  &nbsp  &nbsp
     					</div>
     					<!-- /NAV -->
     				</div>
@@ -221,9 +225,10 @@
     								<h3 class="footer-title">Service</h3>
     								<ul class="footer-links">
     									<li><a href="/">My Account</a></li>
-    									<li><a href="/product/add">Add Product</a></li>
+    									<li><a href="/product/create">Add Product</a></li>
     									<li><a href="#">Wishlist</a></li>
-    									<li><a href="/">Order Product</a></li>
+    									<li><a href="/contact">Order Product</a></li>
+                      <li><a href="#">Order Product</a></li>
     									<li><a href="#">Help</a></li>
     								</ul>
     							</div>

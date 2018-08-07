@@ -61,21 +61,21 @@
 <!-- STORE -->
 
 <div class="container">
-
+        {{#each data}}
 					<div id="store" class="col">
 						<!-- store products -->
 						<div class="row">
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
+						<div class="col-md-4 col-xs-4">
 								<div class="product">
 									<div class="product-img">
-										<img src={{rows.0.images}} alt="">
+										<img src={{this.images}} alt="">
 
 									</div>
 									<div class="product-body">
-										<p class="product-category">Product ID: {{rows.0.id}}</p>
-										<h3 class="product-name" id="product1"><a href="/products/{{rows.0.id}}">{{rows.0.name}}</a></h3>
-										<h4 class="product-price"> ₱{{rows.0.price}}.00 </h4>
+										<p class="product-category">Product ID: {{this.id}}</p>
+										<h3 class="product-name" id="product1"><a href="/products/{{this.id}}">{{this.product_name}}</a></h3>
+										<h4 class="product-price"> ₱{{this.price}}.00 </h4>
 										<div class="product-rating">
 											<i class="fa fa-star"></i>
 											<i class="fa fa-star"></i>
@@ -85,70 +85,25 @@
 										</div>
 
 									</div>
+
+                  <!-- Select Product -->
 									<div class="add-to-cart" id="order22">
-										<button class="btn-btn-info"><i class="fa fa-shopping-cart"></i> <a href="/products/{{rows.0.id}}">Select Product</a></button>
+										<button class="btn-btn-info"><i class="fa fa-shopping-cart"></i> <a href="/products/{{this.id}}">Select Product</a></button>
 									</div>
+                  <!-- End of Select Product -->
+
 								</div>
-							</div>
+
+              </div>
+
 							<!-- /product -->
-
-              <div class="col-md-4 col-xs-6">
-                <div class="product">
-                  <div class="product-img">
-                    <img src={{rows.1.images}} alt="">
-
-                  </div>
-                  <div class="product-body">
-                    <p class="product-category">Product ID: {{rows.1.id}}</p>
-                    <h3 class="product-name"><a href="/products/{{rows.1.id}}">{{rows.1.name}}</a></h3>
-                    <h4 class="product-price"> ₱{{rows.1.price}}.00 </h4>
-                    <div class="product-rating">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                    </div>
-
-                  </div>
-									<div class="add-to-cart" id="order22">
-										<button class="btn-btn-info"><i class="fa fa-shopping-cart"></i> <a href="/products/{{rows.1.id}}">Select Product</a></button>
-									</div>
-								</div>
-							</div>
-
-              <div class="col-md-4 col-xs-6">
-                <div class="product">
-                  <div class="product-img">
-                    <img src="{{rows.2.images}}" alt="">
-
-                  </div>
-                  <div class="product-body">
-                    <p class="product-category">Product ID: {{rows.2.id}}</p>
-                    <h3 class="product-name" ><a href="/products/{{rows.2.id}}">{{rows.2.name}}</a></h3>
-                    <h4 class="product-price"> ₱{{rows.2.price}}.00 </h4>
-                    <div class="product-rating">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                    </div>
-
-                  </div>
-									<div class="add-to-cart" id="order22">
-										<button class="btn-btn-info"><i class="fa fa-shopping-cart"></i> <a href="/products/{{rows.2.id}}">Select Product</a></button>
-									</div>
-								</div>
-							</div>
-
-
 						</div>
+
 						<!-- /store products -->
 					</div>
 					<!-- /STORE -->
 
-
+  {{/each}}
 </div>
 
 

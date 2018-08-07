@@ -1,0 +1,104 @@
+{{#each products}}
+<form method="POST" action="/products/{{this.id}}">
+{{/each}}
+
+<div class="container">
+        <div class="row centered-form">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+			    		<h3 class="panel-title"><b>Update Product</b> </h3>
+			 			</div>
+            <div class="panel-body">
+              {{#each products}}
+
+              <div class="form-group">
+                <label for="usr">Product ID:</label>
+                <input id="productid" name="id" type="text" value="{{this.id}}" class="form-control" required="" readonly="">
+              </div>
+
+              	<div class="form-group">
+                  <label for="usr">Name:</label>
+                  <input type="text" name="productname" class="form-control" value="{{this.product_name}}" class="form-control" required="">
+                </div>
+
+
+
+                <div class="form-group">
+                <label for="usr">Description:</label>
+                <input class="form-control" name="productdescription" type="text" value="{{this.product_description}}" class="form-control" required=""> </textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="usr">Tagline:</label>
+                  <input type="text" name="tagline" class="form-control" value="{{this.tagline}}" required="">
+                </div>
+
+                <div class="form-group">
+                  <label for="usr">Price:</label>
+                  <input type="text" name="price" class="form-control" value="{{this.price}}" required="">
+                </div>
+
+                <div class="form-group">
+                  <label for="usr">Warranty:</label>
+                  <input type="text" name="warranty" class="form-control" value="{{this.warranty}}" required="">
+                </div>
+
+                <div class="form-group">
+                  <label for="usr">Images:</label>
+                  <input type="text" name="images" class="form-control" value="{{this.images}}" required="">
+                </div>
+
+
+                  {{/each}}
+
+                  <div class="form-group">
+    					<label class="control-label" for="category_id">Product Category:</label>
+    					<div class="text-center">
+    						<select name="category_id" class="form-control" size="1">
+    							{{#each products}}
+    							<option value="{{this.category_id}}">Change Category to: </option>
+    							{{/each}}
+    						{{#each products_category}}
+    						 	<option value="{{this.id}}">{{this.name}}</option>
+    						 {{/each}}
+    						</select>
+    					</div>
+    				</div>
+
+            <div class="form-group">
+            <label class="control-label" for="brand_id">Brand:</label>
+            <div class="text-center">
+              <select name="brand_id" class="form-control" size="1">
+                {{#each products}}
+                <option value='{{this.brand_id}}'>Change Brand to:</option>
+                {{/each}}
+                {{#each brands}}
+                <option value='{{this.id}}'>{{this.name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+                <button type="submit" class="btn btn-default">Update Product </button>
+              </form>
+			    	</div>
+	    		</div>
+    		</div>
+    	</div>
+    </div>
+
+    <br>
+
+    <style>
+    body{
+  background-color: #525252;
+}
+.centered-form{
+margin-top: 30px;
+}
+
+.centered-form .panel{
+background: rgba(255, 255, 255, 0.8);
+box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+}
+    </style>
