@@ -184,9 +184,8 @@ app.post('/', function(req,res) {
 			console.log(err.stack)
 			}
 		else {
-			console.log(res.rows[0])
+			console.log('product added')
 		}
-    console.log('product added')
 	});
   	res.redirect('/');
   });
@@ -201,10 +200,9 @@ app.post('/categories', function(req,res){
 			console.log(err.stack)
 			}
 		else {
-			console.log(res.rows[0])
+			console.log('category added')
 		}
 	});
-    console.log('category added')
 	res.redirect('/categories');
 });
 
@@ -241,9 +239,9 @@ app.post('/brands', function(req,res){
 			console.log(err.stack)
 			}
 		else {
-			console.log(res.rows[0])
+			console.log('brand added')
 		}
-    console.log('brand added')
+
 	});
 	res.redirect('/brands');
 });
