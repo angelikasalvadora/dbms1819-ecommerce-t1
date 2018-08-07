@@ -82,52 +82,10 @@ app.get('/', function(req,res) {
 			list.push(data.rows[i]);
 		}
 		res.render('home',{
-			data: list,
-			title: 'Top Products'
+			products: list,
 		});
 	});
 });
-
-app.get('/product/create', (req,res)=>{
-	client.query('SELECT * FROM products_category', (req, data)=>{
-		var list = [];
-		for (var i = 1; i < data.rows.length+1; i++) {
-				list.push(data.rows[i-1]);
-		}
-		client.query('SELECT * FROM brands', (req, data)=>{
-			var list2 = [];
-			for (var i = 1; i < data.rows.length+1; i++) {
-					list2.push(data.rows[i-1]);
-			}
-			res.render('createproduct',{
-				data: list,
-				data2: list2
-			});
-		});
-	});
-});
-
-app.post('/', function(req,res) { //product list with insert new product
-	var values =[];
-	values = [req.body.productname,
-            req.body.productdescription,
-            req.body.tagline,
-            req.body.price,
-            req.body.warranty,
-            req.body.images,
-            req.body.category_id,
-            req.body.brand_id];
-	client.query("INSERT INTO products(product_name, product_description, tagline, price, warranty, images, category_id, brand_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)", values, (err, res)=>{
-		if (err) {
-			console.log(err.stack)
-			}
-		else {
-			console.log(res.rows[0])
-		}
-    console.log('product added')
-	});
-  	res.redirect('/');
-  });
 
   app.get('/products/:id', (req,res)=>{
       	var id = req.params.id;
@@ -186,8 +144,53 @@ app.post('/product/create',function(req,res,next) {
       res.redirect('/');
 }); */
 
-// category
-// create table products_category(id SERIAL PRIMARY KEY, name varchar(80));
+
+
+
+// This is to display brands and category to Create Product Page in a Drop Down List
+app.get('/product/create', (req,res)=>{
+	client.query('SELECT * FROM products_category', (req, data)=>{
+		var list = [];
+		for (var i = 1; i < data.rows.length+1; i++) {
+				list.push(data.rows[i-1]);
+		}
+		client.query('SELECT * FROM brands', (req, data)=>{
+			var list2 = [];
+			for (var i = 1; i < data.rows.length+1; i++) {
+					list2.push(data.rows[i-1]);
+			}
+			res.render('createproduct',{
+				catdata: list,
+				branddata: list2
+			});
+		});
+	});
+});
+
+// This is to insert values entered in Create Product list to the Database
+
+app.post('/', function(req,res) {
+	var values =[];
+	values = [req.body.productname,
+            req.body.productdescription,
+            req.body.tagline,
+            req.body.price,
+            req.body.warranty,
+            req.body.images,
+            req.body.category_id,
+            req.body.brand_id];
+	client.query("INSERT INTO products(product_name, product_description, tagline, price, warranty, images, category_id, brand_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)", values, (err, res)=>{
+		if (err) {
+			console.log(err.stack)
+			}
+		else {
+			console.log(res.rows[0])
+		}
+    console.log('product added')
+	});
+  	res.redirect('/');
+  });
+
 app.post('/categories', function(req,res){
 	var values =[];
 	values = [req.body.categoryname];
@@ -205,6 +208,10 @@ app.post('/categories', function(req,res){
 	res.redirect('/categories');
 });
 
+
+// category
+// create table products_category(id SERIAL PRIMARY KEY, name varchar(80));
+//This is all for Category
 app.get('/categories', (req,res)=>{
 	client.query('SELECT * FROM products_category', (req, data)=>{
 		var list = [];
@@ -212,7 +219,7 @@ app.get('/categories', (req,res)=>{
 				list.push(data.rows[i-1]);
 		}
 		res.render('categories',{
-			data: list
+			catlists: list
 		});
 	});
 });
@@ -223,7 +230,7 @@ app.get('/category/create',(req,res) => {
 
 // brand
 //create table brands(id SERIAL PRIMARY KEY,name varchar(80),description varchar(250));
-
+//This is all for Brands
 app.post('/brands', function(req,res){
 	var values =[];
 	values = [req.body.brandname,req.body.branddescription];
@@ -248,7 +255,7 @@ app.get('/brands', (req,res)=>{
 				list.push(data.rows[i-1]);
 		}
 		res.render('brand',{
-			data: list
+			brandnames: list
 		});
 	});
 });
