@@ -147,7 +147,6 @@ app.get('/products/:id', (req,res)=>{
 /*app.get('/product/create',(req,res) => {
       res.render('bookform');
     });
-
 app.post('/product/create',function(req,res,next) {
       console.log('post body', req.body);
       var sql ='INSERT INTO products (name, type, brand, description,price,quantity,images) VALUES ($1, $2, $3, $4, $5, $6,$7)'
@@ -231,6 +230,7 @@ app.get('/categories', (req,res)=>{
 		});
 	});
 });
+
 
 app.get('/category/create',(req,res) => {
         res.render('createcategory');
