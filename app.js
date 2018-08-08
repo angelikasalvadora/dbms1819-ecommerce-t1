@@ -409,13 +409,20 @@ app.post('/contact',function(req,res,next) {
       client.query(custo, mer);
 
 });
-//Set Static path
-/*app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', function(req, res){
-  res.render('home' ,{
-    title: 'Customers'
-  });
-}); */
+
+// Customer List
+app.get('/customers',(req,res) => {
+        res.render('customers');
+        });
+
+app.get('/orders',(req,res) => {
+        res.render('orders');
+        });
+
+app.get('/customer/:id',(req,res) => {
+        res.render('details');
+        });
+
 
 //SERVER
 app.listen(process.env.PORT||8000);
