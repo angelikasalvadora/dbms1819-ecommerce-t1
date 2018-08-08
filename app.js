@@ -23,6 +23,8 @@ var client = new Client({
   ssl: true
 });
 
+
+
 /*var connect = 'lclezoprxxuvik://lclezoprxxuvik:f62d35218f6378aaa13241a8d899099874d0f1c3d8f220994481ff3dcc5e60a1@ec2-50-17-189-165.compute-1.amazonaws.com:5432/detdajekraf8p9';
 */
 
@@ -243,6 +245,7 @@ app.post('/brands', function(req,res){
 		}
 
 	});
+
 	res.redirect('/brands');
 });
 
