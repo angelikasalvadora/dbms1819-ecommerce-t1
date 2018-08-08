@@ -1,7 +1,7 @@
 <!-- SECTION -->
 
 	<div class="section">
-      	{{#each data}}
+
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
@@ -10,14 +10,14 @@
 					<div class="col-md-5 col-md-push--1">
 						<div id="product-main-img">
 							<div class="product-preview">
-								<img src="{{this.images}}" alt="">
+								<img src="{{image}}" alt="">
 							</div>
 						</div>
 					</div>
 				<!-- Product details -->
 					<div class="col-md-5">
 						<div class="product-details">
-							<h2 class="product-name" style="font-weight:bold;">{{this.product_name}}</h2>
+							<h2 class="product-name" style="font-weight:bold;">{{name}}</h2>
 							<div>
 								<div class="product-rating">
 									<i class="fa fa-star"></i>
@@ -28,28 +28,28 @@
 								</div>
 							</div>
 							<div>
-								<h3 class="product-price">₱{{this.price}}.00 </h3>
+								<h3 class="product-price">₱{{price}}.00 </h3>
 
 							</div>
-							<p style="font-size:15px;">{{this.product_description}}</p>
+							<p style="font-size:15px;">{{description}}</p>
 
 							<ul class="product-links">
 								<li><a href="/categories">Category:</a></li>
-								<li>{{this.catname}}</li>
+								<li>{{category}}</li>
 								<li><a href="/brands">Brand:</a></li>
-								<li>{{this.bname}}</li>
+								<li>{{brandname}}</li>
 							</ul>
 
               <div class="product-options">
               <label>
                 Product ID:
-                <input type="text" id="myInput" value="{{this.id}}" class="form-control" required="" readonly="">
+                <input type="text" id="myInput" value="{{idnumber}}" class="form-control" required="" readonly="">
                 <button onclick="myFunction()"><h5>Click to copy Product ID</h5></button>
               </label>
               </div>
 
 							<div class="product-options">
-									<p style="font-size:15px;">{{this.tagline}}</p>
+									<p style="font-size:15px;">{{tagline}}</p>
 							</div>
 
 
@@ -58,15 +58,11 @@
 								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i><a href="/contact"> Order</a></button>
 							</div>
 
-							{{/each}}
+
 
 
 							<div class="add-to-cart">
-								{{#each data}}
-									<form method="GET" action="/product/update/{{this.id}}">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Update</button>
-							</form>
-							{{/each}}
+								<a href="/product/update/{{this.idnumber}}"><button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Update</button></a>
 							</div>
 
 							<ul class="product-links">

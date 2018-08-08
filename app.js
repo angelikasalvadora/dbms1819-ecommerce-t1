@@ -77,7 +77,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 }); */
 
 //PG Connect
-app.get('/', function(req,res) {
+/*app.get('/', function(req,res) {
 	client.query('SELECT * FROM products ORDER BY products.id', (req, data)=>{
 		var list = [];
 		for (var i = 0; i < data.rows.length; i++) {
@@ -87,22 +87,32 @@ app.get('/', function(req,res) {
 			products: list,
 		});
 	});
+});*/
+
+
+app.get('/',(req, res)=>{
+
+	 client.query('SELECT * FROM products ORDER BY products.id;')
+	.then((results)=>{
+		res.render('home', results);
+	})
+	.catch((err) => {
+		console.log('error',err);
+		res.send('Error!');
+	});
 });
 
-  app.get('/products/:id', (req,res)=>{
-      	var id = req.params.id;
-      	client.query('SELECT products.id,products.product_name,products.product_description,products.tagline,products.price,products.warranty,products.images,products_category.name AS catname ,brands.name AS bname FROM products INNER JOIN brands ON products.brand_id = brands.id INNER JOIN products_category ON products.category_id = products_category.id', (req, data)=>{
-      		var list = [];
-      		for (var i = 0; i < data.rows.length+1; i++) {
-      			if (i==id) {
-      				list.push(data.rows[i-1]);
-      			}
-      		}
-      		res.render('products',{
-      			data: list
-      		});
-      	});
-      });
+app.get('/products/:id', function(req, res) {
+
+  client.query('SELECT products.id AS proid,products.product_name AS proim,products.product_description AS prodec,products.tagline AS protag,products.price AS propri,products.warranty AS prowar,products.images AS proimage,products_category.name AS catname ,brands.name AS bname FROM products INNER JOIN brands ON products.brand_id = brands.id INNER JOIN products_category ON products.category_id = products_category.id WHERE products.id = '+req.params.id+';')
+    .then((results)=>{
+		res.render('products',{name: results.rows[0].proim,description: results.rows[0].prodec,tagline: results.rows[0].protag,price: results.rows[0].propri,warranty: results.rows[0].prowar,image: results.rows[0].proimage,brandname: results.rows[0].bname,category: results.rows[0].catname,
+               idnumber: results.rows[0].proid})
+	})
+	.catch((err) => {
+		console.log('error',err);
+		res.send('Error!'); });
+  });
 
 // client.query('SELECT name FROM products WHERE id=1')
 
@@ -145,8 +155,6 @@ app.post('/product/create',function(req,res,next) {
       client.query(sql, params);
       res.redirect('/');
 }); */
-
-
 
 
 // This is to display brands and category to Create Product Page in a Drop Down List
@@ -278,55 +286,66 @@ app.get('/contact',(req,res)=> {
 
 
 
+// WORKING APP.GET UPDATE
+/* app.get('/product/update/:id', (req,res)=>{
+	var id = req.params.id;
+	client.query('SELECT products.id, products.product_name, products.product_description, products.tagline, products.price, products.warranty, products.images, products.category_id, products_category.name, products.brand_id, brands.name FROM products INNER JOIN products_category ON products.category_id = products_category.id INNER JOIN brands ON products.brand_id = brands.id ORDER BY products.id' , (req, data)=>{
+		var list = [];
+		for (var i = 1; i < data.rows.length+1; i++) {
+			if (i==id) {
+				list.push(data.rows[i-1]);
+			}
+		}
+			client.query('SELECT * FROM products_category', (req, data)=>{
+			var list2 = [];
+			for (var i = 1; i < data.rows.length+1; i++) {
+				list2.push(data.rows[i-1]);
+			}
+			client.query('SELECT * FROM brands', (req, data)=>{
+				var list3 = [];
+				for (var i = 1; i < data.rows.length+1; i++) {
+					list3.push(data.rows[i-1]);
+				}
+				res.render('updateproduct',{
+					products: list,
+					products_category: list2,
+					brands: list3
+				});
+			});
+		});
+	});
+}); */
 
-    app.get('/product/update/:id', (req,res)=>{
-    	var id = req.params.id;
-    	client.query('SELECT products.id, products.product_name, products.product_description, products.tagline, products.price, products.warranty, products.images, products.category_id, products_category.name, products.brand_id, brands.name FROM products INNER JOIN products_category ON products.category_id = products_category.id INNER JOIN brands ON products.brand_id = brands.id ORDER BY products.id' , (req, data)=>{
-    		var list = [];
-    		for (var i = 1; i < data.rows.length+1; i++) {
-    			if (i==id) {
-    				list.push(data.rows[i-1]);
-    			}
-    		}
-    			client.query('SELECT * FROM products_category', (req, data)=>{
-    			var list2 = [];
-    			for (var i = 1; i < data.rows.length+1; i++) {
-    				list2.push(data.rows[i-1]);
-    			}
-    			client.query('SELECT * FROM brands', (req, data)=>{
-    				var list3 = [];
-    				for (var i = 1; i < data.rows.length+1; i++) {
-    					list3.push(data.rows[i-1]);
-    				}
-    				res.render('updateproduct',{
-    					products: list,
-    					products_category: list2,
-    					brands: list3
-    				});
-    			});
+app.get('/product/update/:id', function(req, res) {
+
+       var category = [];
+    	 var brand = [];
+    	 var both =[];
+    	  client.query('SELECT * FROM brands;')
+    	.then((result)=>{
+    		brand = result.rows;
+    	    both.push(brand);
+    	})
+        client.query('SELECT * FROM products_category;')
+    	.then((result)=>{
+    		category = result.rows;
+    	    both.push(category);
+    	});
+    	 client.query('SELECT products.id AS id,products.images AS ip,products.product_name AS namep, products.product_description AS desp,products.tagline AS tagp,products.price AS prip,products.warranty AS warp,brands.name AS brandp,brands.description AS branddesc,products_category.name AS categoryname FROM products INNER JOIN brands ON products.brand_id=brands.id INNER JOIN products_category ON products.category_id=products_category.id WHERE products.id = '+req.params.id+';')
+    	.then((result)=>{
+    		res.render('updateproduct', {
+    			rows: result.rows[0],
+    			brand: both
     		});
     	});
-    });
+    	});
 
-    app.post('/products/:id', function(req,res){
-	console.log(req.body);
-	var id = req.params.id;
-	var values =[];
-	values = [req.body.id,
-            req.body.productname,
-            req.body.productdescription,
-            req.body.tagline,
-            req.body.price,
-            req.body.warranty,
-            req.body.images,
-            req.body.category_id,
-            req.body.brand_id];
 
-	console.log(values);
-	client.query('UPDATE products SET product_name = $2, product_description = $3, tagline = $4, price = $5, warranty = $6, images = $7, category_id = $8, brand_id = $9 WHERE id = $1', values);
-	res.redirect('/products/:id');
+app.post('/product/update/:id', function(req, res) {
+	client.query("UPDATE products SET product_name = '"+req.body.productname+"', product_description = '"+req.body.productdescription+"', tagline = '"+req.body.tagline+"', price = '"+req.body.price+"', warranty = '"+req.body.warranty+"',category_id = '"+req.body.category_id+"', brand_id = '"+req.body.brand_id+"', images = '"+req.body.images+"'WHERE id = '"+req.params.id+"' ;");
+	res.redirect('/');
 });
-
+// for contacts
 
 app.get('/contact',(req,res) => {
       res.render('contact');
