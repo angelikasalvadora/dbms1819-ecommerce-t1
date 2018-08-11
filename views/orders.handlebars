@@ -1,0 +1,32 @@
+<br><br>
+<div class="panel panel-default panel-order">
+  <div class="panel-heading">
+      <strong><p style="font-size:20px">Order List</p></strong>
+  </div>
+
+	{{#each orders_data}}
+<div class="panel-body">
+  	<div class="row">
+
+	  <div class="col-md-1"><img src="https://cdn2.iconfinder.com/data/icons/shopping-e-commerce-2-1/32/Success-Place-Order-Complete-Shopping-Tick-512.png" class="media-object img-thumbnail"></div>
+	  <div class="col-md-11">
+		<div class="row">
+		  <div class="col-md-12">
+  <div class="pull-right"><label class="label label-success">Approved</label> </div>
+			<p style="font-size:17px;"><span><strong>Order ID: {{this.id}}</strong> </span> <span class="label label-info">by {{this.first_name}} {{this.last_name}}</span>&nbsp&nbsp&nbsp&nbsp&nbsp <b>Product ordered:</b> {{this.product_name}}<br></p>
+      <b>Quantity:</b> {{this.quantity}}<br>
+      <b>Price: </b>Php {{this.price}}.00<br>
+      <b>Total: </b>Php {{this.total}}.00<br>
+		  </div>
+		  <div class="col-md-12">
+			<p style="font-size:15px"><b> Order made on:</b> {{this.order_date}} by <a href="#">{{this.first_name}} {{this.last_name}}</a></p>
+      <p style="font-size:15px"><b> Customer Address:</b> {{this.street}} {{this.municipality}} {{this.zipcode}} {{this.province}}</p>
+		  </div>
+		</div>
+	  </div>
+	</div>
+</div>
+<br>
+<br>
+		{{/each}}
+</div>

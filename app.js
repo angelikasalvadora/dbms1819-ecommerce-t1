@@ -23,6 +23,14 @@ var client = new Client({
   ssl: true
 });
 
+const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+        user: "nstechnohub@gmail.com",
+        pass: "@kquku8m4"
+    }
+});
 
 
 /*var connect = 'lclezoprxxuvik://lclezoprxxuvik:f62d35218f6378aaa13241a8d899099874d0f1c3d8f220994481ff3dcc5e60a1@ec2-50-17-189-165.compute-1.amazonaws.com:5432/detdajekraf8p9';
@@ -410,19 +418,201 @@ app.post('/contact',function(req,res,next) {
 
 });
 
-// Customer List
-app.get('/customers',(req,res) => {
-        res.render('customers');
-        });
+  app.post('/details', function(req,res){
+	var first_name = req.body.first_name
+	var last_name = req.body.last_name
+	var email = req.body.email
+	var street = req.body.street
+	var municipality = req.body.municipality
+	var zipcode = req.body.zipcode
+	var quantity = req.body.quantity
+	var message = req.body.message
+  var province = req.body.province
+	var product_id = req.body.product_id2
+	var product_name = req.body.product_name
 
-app.get('/orders',(req,res) => {
-        res.render('orders');
-        });
+	const query = {
+		text: 'SELECT * FROM customers WHERE email = $1',
+		values: [email]
+	}
+	client.query(query, (error,customer_data)=>{
+		console.log('\ncustomer result: ' + customer_data.rowCount)
 
-app.get('/customer/:id',(req,res) => {
-        res.render('details');
-        });
+		if ( customer_data.rowCount == 0){
+			const insert_customer = {
+				text: 'INSERT INTO customers (first_name, last_name, email, street, municipality,province,zipcode) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING id ',
+				values: [ first_name, last_name, email, street, municipality, province, zipcode ]
+			}
+			console.log('Customer Details');
 
+			client.query(insert_customer, (error2,success_data)=>{
+				console.log('Inserted Customer Details');
+				var customer_id = success_data.rows[0].id;
+				console.log('customer id:' + customer_id)
+
+				const insert_order = {
+					text: 'INSERT INTO orders (customer_id,product_id,quantity) VALUES ($1, $2, $3) RETURNING id',
+					values: [customer_id,product_id,quantity]
+				}
+				console.log('Order Details')
+				client.query(insert_order, (error3,success_data2)=>{
+					console.log('Inserted order details to table')
+					var order_id = success_data2.rows[0].id
+					console.log('order id: '+ order_id)
+
+					console.log('sending email')
+					var mailOptions={
+						from: 'nstechnohub@gmail.com',
+				        to : req.body.email,
+				        subject : "NS Technohub Order Confirmation",
+				        text : 'Your order has been succesfully received.' +  '\n\n' +
+				        		'Order Details: ' + '\n' +
+				        		'Name: ' + first_name +" "+ last_name+'\n' +
+				        		'Address: ' + street +" "+ municipality + '\n' +
+                    'Province: ' + province + '\n' +
+				        		'Product ordered: ' + product_name + '\n' +
+				        		'Quantity ordered: ' + quantity + '\n' +
+				        		'Order Notes: ' + message + '\n'
+				    }
+
+				    // console.log(mailOptions);
+				    smtpTransport.sendMail(mailOptions, function(error, response){
+						if(error){
+						}else{
+							console.log('Customer Received Email')
+						}
+					});
+
+				    var textBody = 'Customer name: '+first_name +" " + last_name + "\n" +
+				    				'Product name: '+ product_name + "\n" +
+				    				'Product ID: ' + product_id + "\n" +
+				    				'Quantity: '+ quantity + "\n" +
+				    				'Address: '+street +" " + municipality + "\n" +
+				    				'Order Notes: ' + message
+
+					var mailOptions={
+				        to : 'nstechnohub@gmail.com',
+				        from: req.body.email,
+				        subject : "NS TECHNOHUB NEW ORDER REQUEST - Order ID " + order_id,
+				        text : textBody
+				    }
+				    smtpTransport.sendMail(mailOptions, function(error, response){
+						if(error){
+						}else{
+							console.log('Email sent to admin')
+							res.render('confirmation');
+						}
+					});
+				})
+			})
+
+
+		} else {
+			console.log('Customer Details Existing');
+			var customer_id = customer_data.rows[0].id;
+
+			console.log('customer id:' + customer_id)
+
+			const insert_order = {
+				text: 'INSERT INTO orders (customer_id,product_id,quantity) VALUES ($1, $2, $3) RETURNING id',
+				values: [customer_id,product_id,quantity]
+			}
+			console.log('Order Details')
+			client.query(insert_order, (error3,success_data2)=>{
+				console.log('Order Details Inserted')
+				var order_id = success_data2.rows[0].id
+				console.log('order id: '+ order_id)
+
+				console.log('Sending')
+				//later include the return data of order id
+
+				var mailOptions={
+					from: 'nstechnohub@gmail.com',
+			        to : req.body.email,
+			        subject : "NS Technohub Order Confirmation",
+			        text : 'Your order has been succesfully received.' +  '\n\n' +
+			        		'Order Details: ' + '\n' +
+			        		'Name: ' + first_name +" "+ last_name+'\n' +
+			        		'Address: ' + street +" "+ municipality + '\n' +
+                      'Province: ' + province + '\n' +
+			        		'Product ordered: ' + product_name + '\n' +
+			        		'Quantity ordered: ' + quantity + '\n' +
+			        		'Order Notes: ' + message + '\n'
+			    }
+
+			    // console.log(mailOptions);
+			    smtpTransport.sendMail(mailOptions, function(error, response){
+					if(error){
+					}else{
+						console.log('Customer Email Sent')
+					}
+				});
+
+			    var textBody = 'Customer name: '+first_name +" " + last_name + "\n" +
+			    				'Product name: '+ product_name + "\n" +
+			    				'Product ID: ' + product_id + "\n" +
+			    				'Quantity: '+ quantity + "\n" +
+			    				'Address: '+street +" " + municipality + "\n" +
+			    				'Message request: ' + message
+
+				var mailOptions={
+			        to : 'nstechnohub@gmail.com',
+			        from: req.body.email,
+			        subject : "NS TECHNOHUB NEW ORDER REQUEST - Order ID " + order_id,
+			        text : textBody
+			    }
+
+			    // console.log(mailOptions);
+			    smtpTransport.sendMail(mailOptions, function(error, response){
+					if(error){
+					}else{
+						console.log('Email sent to system')
+						res.render('confirmation');
+					}
+				});
+			})
+		}
+	})
+});
+
+app.get('/details', function(req,res){
+	res.redirect('/')
+});
+
+
+app.get('/orders', function(req,res){
+	 const text = 'SELECT orders.id,first_name,last_name,street,order_date,municipality,zipcode,product_name,price,quantity,province'+'FROM orders INNER JOIN products ON orders.product_id = products.id'+'INNER JOIN customers on orders.customer_id = customers.id;';
+	client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (error,orders_data)=>{
+		res.render('orders',{
+			orders_data: orders_data.rows
+		})
+	})
+})
+
+app.get('/customers', function(req,res){
+	client.query('SELECT * FROM customers',(errors,customers_data)=>{
+		res.render('customers',{
+			customers: customers_data.rows
+		})
+	})
+});
+
+
+app.get('/customer/:id', function(req,res){
+	client.query('SELECT * FROM customers WHERE id = $1',[req.params.id],(error,customer_data)=>{
+		client.query('SELECT orders.id,first_name,last_name,province,order_date,street,municipality,email,zipcode,product_name,price,quantity, price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id WHERE orders.customer_id = $1',[req.params.id],(error2,orders_data)=>{
+
+			res.render('details',{
+				first_name: customer_data.rows[0].first_name,last_name: customer_data.rows[0].last_name,email: customer_data.rows[0].email,street: customer_data.rows[0].street,municipality: customer_data.rows[0].municipality,zipcode: customer_data.rows[0].zipcode,province: customer_data.rows[0].province,orders_data: orders_data.rows
+			})
+		})
+	})
+})
+
+app.post('/customers', function(req,res){
+  console.log('Display customer order details of customer : '+req.body.customer_id)
+	res.redirect('/customer/'+req.body.customer_id)
+})
 
 //SERVER
 app.listen(process.env.PORT||8000);
