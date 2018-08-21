@@ -29,8 +29,11 @@
     "lint": "eslint app.js --fix",
     "precommit": "lint-staged"
   },
-  "lint-staged":{
-    "*.js":["eslint","git add"]
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "git add"
+    ]
   },
   "author": "",
   "license": "ISC"
