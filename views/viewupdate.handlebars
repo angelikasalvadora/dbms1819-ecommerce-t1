@@ -1,0 +1,27 @@
+
+
+<br><br>
+<table >
+
+  <tr>
+    <th>&nbsp&nbsp&nbsp&nbspID</th>
+    <th>&nbsp&nbsp&nbsp&nbspName</th>
+    <th>&nbsp&nbsp&nbsp&nbspCategory</th>
+    <th>&nbsp&nbsp&nbsp&nbspBrand</th>
+
+    <th>&nbsp&nbsp&nbsp&nbspPrice</th>
+
+  </tr>
+  {{#each products}}
+  <tr>
+    <td>&nbsp&nbsp&nbsp&nbsp{{this.proid}}</td>
+    <td>&nbsp&nbsp&nbsp&nbsp{{this.proim}}</td>
+<td>&nbsp&nbsp&nbsp&nbsp{{this.catname}}</td>
+<td>&nbsp&nbsp&nbsp&nbsp{{this.bname}}</td>
+    <td>&nbsp&nbsp&nbsp&nbsp{{this.propri}}</td>
+    <td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+      <td><a href="/product/update/{{this.proid}}">Update</a>
+</td>
+	{{/each}}
+  </tr>
+</table>

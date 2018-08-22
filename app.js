@@ -43,6 +43,8 @@ app.use('/images', express.static(__dirname + '/images')); // This is to display
 app.use('/stylesheets', express.static(__dirname + '/style.css')); // This is to have one file only for css styles.
 app.use('/js', express.static(__dirname + '/js')); // This is for js files
 app.use('/fonts', express.static(__dirname + '/fonts')); // This is for js files
+app.use('/vendor', express.static(__dirname + '/vendor'));
+app.use('/scss', express.static(__dirname + '/scss'));
 
 // BODY PARSER MIDDLEWARE
 app.use(bodyParser.json());
@@ -57,6 +59,19 @@ app.get('/', (req, res) => {
       console.log('error', err);
       res.send('Error!');
     });
+});
+
+app.get('/products/update', function (req, res) {
+  client.query('SELECT products.id AS proid,products.product_name AS proim,products.product_description AS prodec,products.tagline AS protag,products.price AS propri,products.warranty AS prowar,products.images AS proimage,products_category.name AS catname ,brands.name AS bname FROM products INNER JOIN brands ON products.brand_id = brands.id INNER JOIN products_category ON products.category_id = products_category.id ORDER BY products.id', (req, data) => {
+    var list = [];
+    for (var i = 0; i < data.rows.length; i++) {
+      list.push(data.rows[i]);
+    }
+    res.render('viewupdate', {
+      layout: 'mainadmin',
+      products: list
+    });
+  });
 });
 
 app.get('/products/:id', function (req, res) {
@@ -91,6 +106,7 @@ app.get('/product/create', (req, res) => {
         list2.push(data.rows[i - 1]);
       }
       res.render('createproduct', {
+        layout: 'mainadmin',
         catdata: list,
         branddata: list2
       });
@@ -144,14 +160,16 @@ app.get('/categories', (req, res) => {
     for (var i = 1; i < data.rows.length + 1; i++) {
       list.push(data.rows[i - 1]);
     }
-    res.render('categories', {
-      catlists: list
-    });
+    res.render('categories',
+      {catlists: list, layout: 'mainadmin'}
+    );
   });
 });
 
 app.get('/category/create', (req, res) => {
-  res.render('createcategory');
+  res.render('createcategory',
+    {layout: 'mainadmin'}
+  );
 });
 
 // brand
@@ -179,14 +197,16 @@ app.get('/brands', (req, res) => {
     for (var i = 1; i < data.rows.length + 1; i++) {
       list.push(data.rows[i - 1]);
     }
-    res.render('brand', {
-      brandnames: list
-    });
+    res.render('brand',
+      {brandnames: list, layout: 'mainadmin'}
+    );
   });
 });
 
 app.get('/brand/create', (req, res) => {
-  res.render('createbrand');
+  res.render('createbrand',
+    {layout: 'mainadmin'}
+  );
 });
 
 app.get('/product/update/:id', function (req, res) {
@@ -207,6 +227,7 @@ app.get('/product/update/:id', function (req, res) {
     .then((result) => {
       res.render('updateproduct', {
         rows: result.rows[0],
+        layout: 'mainadmin',
         brand: both
       });
     });
@@ -214,7 +235,7 @@ app.get('/product/update/:id', function (req, res) {
 
 app.post('/product/update/:id', function (req, res) {
   client.query("UPDATE products SET product_name = '" + req.body.productname + "', product_description = '" + req.body.productdescription + "', tagline = '" + req.body.tagline + "', price = '" + req.body.price + "', warranty = '" + req.body.warranty + "',category_id = '" + req.body.category_id + "', brand_id = '" + req.body.brand_id + "', images = '" + req.body.images + "'WHERE id = '" + req.params.id + "' ;");
-  res.redirect('/');
+  res.redirect('/products/update');
 });
 // for contacts
 
@@ -441,6 +462,7 @@ app.get('/details', function (req, res) {
 app.get('/orders', function (req, res) {
   client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (error, orders_data) => {
     res.render('orders', {
+      layout: 'mainadmin',
       orders_data: orders_data.rows
     });
   });
@@ -449,6 +471,7 @@ app.get('/orders', function (req, res) {
 app.get('/customers', function (req, res) {
   client.query('SELECT * FROM customers', (errors, customers_data) => {
     res.render('customers', {
+      layout: 'mainadmin',
       customers: customers_data.rows
     });
   });
@@ -458,7 +481,15 @@ app.get('/customer/:id', function (req, res) {
   client.query('SELECT * FROM customers WHERE id = $1', [req.params.id], (error, customer_data) => {
     client.query('SELECT orders.id,first_name,last_name,province,order_date,street,municipality,email,zipcode,product_name,price,quantity, price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id WHERE orders.customer_id = $1', [req.params.id], (error2, orders_data) => {
       res.render('details', {
-        first_name: customer_data.rows[0].first_name, last_name: customer_data.rows[0].last_name, email: customer_data.rows[0].email, street: customer_data.rows[0].street, municipality: customer_data.rows[0].municipality, zipcode: customer_data.rows[0].zipcode, province: customer_data.rows[0].province, orders_data: orders_data.rows
+        layout: 'mainadmin',
+        first_name: customer_data.rows[0].first_name,
+        last_name: customer_data.rows[0].last_name,
+        email: customer_data.rows[0].email,
+        street: customer_data.rows[0].street,
+        municipality: customer_data.rows[0].municipality,
+        zipcode: customer_data.rows[0].zipcode,
+        province: customer_data.rows[0].province,
+        orders_data: orders_data.rows
       });
     });
   });
@@ -467,6 +498,14 @@ app.get('/customer/:id', function (req, res) {
 app.post('/customers', function (req, res) {
   console.log('Display customer order details of customer : ' + req.body.customer_id);
   res.redirect('/customer/' + req.body.customer_id);
+});
+
+app.get('/admin/home', function (req, res) {
+  res.render('adminhome', { layout: 'mainadmin' });
+});
+
+app.get('/products/update', function (req, res) {
+  res.render('viewupdate', { layout: 'mainadmin' });
 });
 
 // SERVER
