@@ -235,6 +235,8 @@ app.get('/categories', (req, res) => {
   });
 });
 
+// categorysidebar
+
 app.get('/category/create', (req, res) => {
   res.render('createcategory',
     {layout: 'mainadmin'}
