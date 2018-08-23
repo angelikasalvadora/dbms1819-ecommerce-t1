@@ -116,7 +116,8 @@ app.get('/product/create', (req, res) => {
 
 // This is to insert values entered in Create Product list to the Database
 
-app.post('/', function (req, res) {
+// CreateProductWorking without validation
+/* app.post('/', function (req, res) {
   var values = [];
   values = [req.body.productname,
     req.body.productdescription,
@@ -134,9 +135,48 @@ app.post('/', function (req, res) {
     }
   });
   res.redirect('/');
+}); */
+
+app.post('/', function (req, res) { // product list with insert new product
+  var values = [];
+  var productName;
+  productName = req.body.productname;
+  values = [req.body.productname,
+    req.body.productdescription,
+    req.body.tagline,
+    req.body.price,
+    req.body.warranty,
+    req.body.images,
+    req.body.category_id,
+    req.body.brand_id];
+  client.query('SELECT product_name FROM products', (req, data) => {
+    var list;
+    var exist = 0;
+    for (var i = 0; i < data.rows.length; i++) {
+      list = data.rows[i].product_name;
+      if (list === productName) {
+        exist = 1;
+      }
+    }
+    if (exist === 1) {
+      res.render('productexist', {
+        layout: 'mainadmin'
+      });
+    } else {
+      client.query('INSERT INTO products(product_name, product_description, tagline, price, warranty, images, category_id, brand_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', values, (err, res) => {
+        if (err) {
+          console.log(err.stack);
+        } else {
+          console.log(data.rows[0]);
+        }
+      });
+      res.redirect('/');
+    }
+  });
 });
 
-app.post('/categories', function (req, res) {
+// categories without validation
+/* app.post('/categories', function (req, res) {
   var values = [];
   values = [req.body.categoryname];
   console.log(req.body);
@@ -149,6 +189,35 @@ app.post('/categories', function (req, res) {
     }
   });
   res.redirect('/categories');
+}); */
+app.post('/categories', function (req, res) { // category list with insert new category query
+  var values = [];
+  values = req.body.categoryname;
+  console.log(req.body);
+  client.query('SELECT name FROM products_category', (req, data) => {
+    var list;
+    var exist = 0;
+    for (var i = 0; i < data.rows.length; i++) {
+      list = data.rows[i].name;
+      if (list === values) {
+        exist = 1;
+      }
+    }
+    if (exist === 1) {
+      res.render('categoryexist', {// temporary html
+        layout: 'mainadmin'
+      });
+    } else {
+      client.query(`INSERT INTO products_category(name) VALUES('${values}')`, (err, data) => {
+        if (err) {
+          console.log(err.stack);
+        } else {
+          console.log(data.rows[0]);
+        }
+      });
+      res.redirect('/categories');
+    }
+  });
 });
 
 // category
@@ -175,7 +244,7 @@ app.get('/category/create', (req, res) => {
 // brand
 // create table brands(id SERIAL PRIMARY KEY,name varchar(80),description varchar(250));
 // This is all for Brands
-app.post('/brands', function (req, res) {
+/* app.post('/brands', function (req, res) {
   var values = [];
   values = [req.body.brandname, req.body.branddescription];
   console.log(req.body);
@@ -189,6 +258,40 @@ app.post('/brands', function (req, res) {
   });
 
   res.redirect('/brands');
+}); */
+
+app.post('/brands', function (req, res) { // brand list insert
+  var values = [];
+  var brandName;
+  brandName = req.body.brandname;
+  values = [req.body.brandname, req.body.branddescription];
+  console.log(req.body);
+  console.log(values);
+  client.query('SELECT name FROM brands', (req, data) => {
+    var list;
+    var exist = 0;
+    for (var i = 0; i < data.rows.length; i++) {
+      list = data.rows[i].name;
+      console.log(list);
+      if (list === brandName) {
+        exist = 1;
+      }
+    }
+    if (exist === 1) {
+      res.render('brandexist', {// temporary html
+        layout: 'mainadmin'
+      });
+    } else {
+      client.query('INSERT INTO brands(name, description) VALUES($1, $2)', values, (err, data) => {
+        if (err) {
+          console.log(err.stack);
+        } else {
+          console.log(data.rows[0]);
+        }
+      });
+      res.redirect('/brands');
+    }
+  });
 });
 
 app.get('/brands', (req, res) => {

@@ -8,6 +8,7 @@
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
     "handlebars": "^4.0.11",
+    "js-alert": "^1.0.4",
     "knex": "^0.15.0",
     "knex-migrate": "^1.6.1",
     "nodemailer": "^4.6.7",
