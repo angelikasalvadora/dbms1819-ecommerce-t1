@@ -423,7 +423,7 @@ app.post('/details', function (req, res) {
   };
   client.query(query, (error, customer_data) => {
     console.log('\ncustomer result: ' + customer_data.rowCount, error);
-
+    console.log(orderDate);
     if (customer_data.rowCount === 0) {
       const insert_customer = {
         text: 'INSERT INTO customers (first_name, last_name, email, street, municipality,province,zipcode) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING id ',
@@ -438,7 +438,7 @@ app.post('/details', function (req, res) {
 
         const insert_order = {
           text: 'INSERT INTO orders (customer_id,product_id,quantity,order_date) VALUES ($1, $2, $3) RETURNING id',
-          values: [customer_id, product_id, quantity, orderDate]
+          values: [customer_id, product_id, quantity]
         };
         console.log('Order Details');
         client.query(insert_order, (error3, success_data2) => {
@@ -499,7 +499,7 @@ app.post('/details', function (req, res) {
 
       const insert_order = {
         text: 'INSERT INTO orders (customer_id,product_id,quantity,order_date) VALUES ($1, $2, $3) RETURNING id',
-        values: [customer_id, product_id, quantity, orderDate]
+        values: [customer_id, product_id, quantity]
       };
       console.log('Order Details');
       client.query(insert_order, (error3, success_data2) => {
