@@ -11,7 +11,9 @@
     "js-alert": "^1.0.4",
     "knex": "^0.15.0",
     "knex-migrate": "^1.6.1",
+    "moment": "^2.22.2",
     "nodemailer": "^4.6.7",
+    "nodemailer-express-handlebars": "^3.0.0",
     "pg": "^7.4.3"
   },
   "devDependencies": {
