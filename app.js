@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var exphbs = require('express-handlebars');
 var nodemailer = require('nodemailer');
-var moment = require('moment');
 var {Client} = require('pg');
 
 var client = new Client({
@@ -415,7 +414,6 @@ app.post('/details', function (req, res) {
   var province = req.body.province;
   var product_id = req.body.product_id2;
   var product_name = req.body.product_name;
-  var orderDate = moment().format('LLLL [GMT+8]');
 
   const query = {
     text: 'SELECT * FROM customers WHERE email = $1',
@@ -423,11 +421,11 @@ app.post('/details', function (req, res) {
   };
   client.query(query, (error, customer_data) => {
     console.log('\ncustomer result: ' + customer_data.rowCount, error);
-    console.log(orderDate);
+
     if (customer_data.rowCount === 0) {
       const insert_customer = {
         text: 'INSERT INTO customers (first_name, last_name, email, street, municipality,province,zipcode) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING id ',
-        values: [first_name, last_name, email, street, municipality, province, zipcode]
+        values: [ first_name, last_name, email, street, municipality, province, zipcode ]
       };
       console.log('Customer Details');
 
@@ -437,7 +435,7 @@ app.post('/details', function (req, res) {
         console.log('customer id:' + customer_id);
 
         const insert_order = {
-          text: 'INSERT INTO orders (customer_id,product_id,quantity,order_date) VALUES ($1, $2, $3) RETURNING id',
+          text: 'INSERT INTO orders (customer_id,product_id,quantity) VALUES ($1, $2, $3) RETURNING id',
           values: [customer_id, product_id, quantity]
         };
         console.log('Order Details');
@@ -498,7 +496,7 @@ app.post('/details', function (req, res) {
       console.log('customer id:' + customer_id);
 
       const insert_order = {
-        text: 'INSERT INTO orders (customer_id,product_id,quantity,order_date) VALUES ($1, $2, $3) RETURNING id',
+        text: 'INSERT INTO orders (customer_id,product_id,quantity) VALUES ($1, $2, $3) RETURNING id',
         values: [customer_id, product_id, quantity]
       };
       console.log('Order Details');
@@ -564,7 +562,8 @@ app.get('/details', function (req, res) {
 });
 
 app.get('/orders', function (req, res) {
-  client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (orders_data) => {
+  client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (error, orders_data) => {
+    console.log('Select orders', error);
     res.render('orders', {
       layout: 'mainadmin',
       orders_data: orders_data.rows
