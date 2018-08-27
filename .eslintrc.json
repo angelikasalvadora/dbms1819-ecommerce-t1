@@ -3,7 +3,7 @@
       "rules": {
         "semi":[2,"always"],
         "camelcase":[0,"no"],
-        "no-path-concat":[0,"nope"],
-        "handle-callback-err":[0,"down"]
+        "no-path-concat":[0,"nope"]
+
     }
 }

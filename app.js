@@ -420,6 +420,7 @@ app.post('/details', function (req, res) {
     values: [email]
   };
   client.query(query, (error, customer_data) => {
+    if (error) {}
     console.log('\ncustomer result: ' + customer_data.rowCount);
 
     if (customer_data.rowCount === 0) {
@@ -563,6 +564,9 @@ app.get('/details', function (req, res) {
 
 app.get('/orders', function (req, res) {
   client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (error, orders_data) => {
+    if (error) {
+
+    }
     res.render('orders', {
       layout: 'mainadmin',
       orders_data: orders_data.rows
@@ -581,7 +585,13 @@ app.get('/customers', function (req, res) {
 
 app.get('/customer/:id', function (req, res) {
   client.query('SELECT * FROM customers WHERE id = $1', [req.params.id], (error, customer_data) => {
+    if (error) {
+
+    }
     client.query('SELECT orders.id,first_name,last_name,province,order_date,street,municipality,email,zipcode,product_name,price,quantity, price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id WHERE orders.customer_id = $1', [req.params.id], (error2, orders_data) => {
+      if (error) {
+
+      }
       res.render('details', {
         layout: 'mainadmin',
         first_name: customer_data.rows[0].first_name,
