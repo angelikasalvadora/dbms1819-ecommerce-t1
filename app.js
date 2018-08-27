@@ -419,8 +419,8 @@ app.post('/details', function (req, res) {
     text: 'SELECT * FROM customers WHERE email = $1',
     values: [email]
   };
-  client.query(query, (error, customer_data) => {
-    console.log('\ncustomer result: ' + customer_data.rowCount, error);
+  client.query(query, (customer_data) => {
+    console.log('\ncustomer result: ' + customer_data.rowCount);
 
     if (customer_data.rowCount === 0) {
       const insert_customer = {
@@ -562,8 +562,7 @@ app.get('/details', function (req, res) {
 });
 
 app.get('/orders', function (req, res) {
-  client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (error, orders_data) => {
-    console.log('Select orders', error);
+  client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (orders_data) => {
     res.render('orders', {
       layout: 'mainadmin',
       orders_data: orders_data.rows
