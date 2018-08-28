@@ -45,20 +45,20 @@ app.use('/js', express.static(__dirname + '/js')); // This is for js files
 app.use('/fonts', express.static(__dirname + '/fonts')); // This is for js files
 app.use('/vendor', express.static(__dirname + '/vendor'));
 app.use('/scss', express.static(__dirname + '/scss'));
+app.use('/models', express.static(__dirname + '/models'));
 
 // BODY PARSER MIDDLEWARE
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+const Product = require('./models/product');
+
 app.get('/', (req, res) => {
-  client.query('SELECT * FROM products ORDER BY products.id;')
-    .then((results) => {
-      res.render('home', results);
-    })
-    .catch((err) => {
-      console.log('error', err);
-      res.send('Error!');
+  Product.list(client, {}, function (products) {
+    res.render('home', {
+      products: products
     });
+  });
 });
 
 app.get('/products/update', function (req, res) {
@@ -75,22 +75,9 @@ app.get('/products/update', function (req, res) {
 });
 
 app.get('/products/:id', function (req, res) {
-  client.query('SELECT products.id AS proid,products.product_name AS proim,products.product_description AS prodec,products.tagline AS protag,products.price AS propri,products.warranty AS prowar,products.images AS proimage,products_category.name AS catname ,brands.name AS bname FROM products INNER JOIN brands ON products.brand_id = brands.id INNER JOIN products_category ON products.category_id = products_category.id WHERE products.id = ' + req.params.id + ';')
-    .then((results) => {
-      res.render('products', {name: results.rows[0].proim,
-        description: results.rows[0].prodec,
-        tagline: results.rows[0].protag,
-        price: results.rows[0].propri,
-        warranty: results.rows[0].prowar,
-        image: results.rows[0].proimage,
-        brandname: results.rows[0].bname,
-        category: results.rows[0].catname,
-        idnumber: results.rows[0].proid});
-    })
-    .catch((err) => {
-      console.log('error', err);
-      res.send('Error!');
-    });
+  Product.getById(client, req.params.id, function (productData) {
+    res.render('products', productData);
+  });
 });
 
 // This is to display brands and category to Create Product Page in a Drop Down List
@@ -113,29 +100,6 @@ app.get('/product/create', (req, res) => {
     });
   });
 });
-
-// This is to insert values entered in Create Product list to the Database
-
-// CreateProductWorking without validation
-/* app.post('/', function (req, res) {
-  var values = [];
-  values = [req.body.productname,
-    req.body.productdescription,
-    req.body.tagline,
-    req.body.price,
-    req.body.warranty,
-    req.body.images,
-    req.body.category_id,
-    req.body.brand_id];
-  client.query('INSERT INTO products(product_name, product_description, tagline, price, warranty, images, category_id, brand_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', values, (err, res) => {
-    if (err) {
-      console.log(err.stack);
-    } else {
-      console.log('product added');
-    }
-  });
-  res.redirect('/');
-}); */
 
 app.post('/', function (req, res) { // product list with insert new product
   var values = [];
@@ -175,21 +139,6 @@ app.post('/', function (req, res) { // product list with insert new product
   });
 });
 
-// categories without validation
-/* app.post('/categories', function (req, res) {
-  var values = [];
-  values = [req.body.categoryname];
-  console.log(req.body);
-  console.log(values);
-  client.query('INSERT INTO products_category(name) VALUES($1)', values, (err, res) => {
-    if (err) {
-      console.log(err.stack);
-    } else {
-      console.log('category added');
-    }
-  });
-  res.redirect('/categories');
-}); */
 app.post('/categories', function (req, res) { // category list with insert new category query
   var values = [];
   values = req.body.categoryname;
@@ -241,24 +190,6 @@ app.get('/category/create', (req, res) => {
   );
 });
 
-// brand
-// create table brands(id SERIAL PRIMARY KEY,name varchar(80),description varchar(250));
-// This is all for Brands
-/* app.post('/brands', function (req, res) {
-  var values = [];
-  values = [req.body.brandname, req.body.branddescription];
-  console.log(req.body);
-  console.log(values);
-  client.query('INSERT INTO brands(name,description) VALUES($1,$2)', values, (err, res) => {
-    if (err) {
-      console.log(err.stack);
-    } else {
-      console.log('brand added');
-    }
-  });
-  res.redirect('/brands');
-}); */
-
 app.post('/brands', function (req, res) { // brand list insert
   var values = [];
   var brandName;
@@ -293,15 +224,13 @@ app.post('/brands', function (req, res) { // brand list insert
   });
 });
 
+const Brands = require('./models/brand');
 app.get('/brands', (req, res) => {
-  client.query('SELECT * FROM brands', (req, data) => {
-    var list = [];
-    for (var i = 1; i < data.rows.length + 1; i++) {
-      list.push(data.rows[i - 1]);
-    }
-    res.render('brand',
-      {brandnames: list, layout: 'mainadmin'}
-    );
+  Brands.blist(client, {}, function (brands) {
+    res.render('brand', {
+      brands: brands,
+      layout: 'mainadmin'
+    });
   });
 });
 
@@ -562,14 +491,12 @@ app.get('/details', function (req, res) {
   res.redirect('/');
 });
 
-app.get('/orders', function (req, res) {
-  client.query('SELECT orders.id,first_name,last_name,order_date,street,municipality,zipcode,product_name,price,province,quantity,price*quantity as total FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN customers on orders.customer_id = customers.id', (error, orders_data) => {
-    if (error) {
-
-    }
+const Orders = require('./models/order');
+app.get('/orders', (req, res) => {
+  Orders.olist(client, {}, function (orders) {
     res.render('orders', {
-      layout: 'mainadmin',
-      orders_data: orders_data.rows
+      orders: orders,
+      layout: 'mainadmin'
     });
   });
 });
