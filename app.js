@@ -172,15 +172,13 @@ app.post('/categories', function (req, res) { // category list with insert new c
 // category
 // create table products_category(id SERIAL PRIMARY KEY, name varchar(80));
 // This is all for Category
+var Category = require('./models/category');
 app.get('/categories', (req, res) => {
-  client.query('SELECT * FROM products_category', (req, data) => {
-    var list = [];
-    for (var i = 1; i < data.rows.length + 1; i++) {
-      list.push(data.rows[i - 1]);
-    }
-    res.render('categories',
-      {catlists: list, layout: 'mainadmin'}
-    );
+  Category.list(client, {}, function (categories) {
+    res.render('categories', {
+      procategories: categories,
+      layout: 'mainadmin'
+    });
   });
 });
 
@@ -501,11 +499,12 @@ app.get('/orders', (req, res) => {
   });
 });
 
-app.get('/customers', function (req, res) {
-  client.query('SELECT * FROM customers', (errors, customers_data) => {
+const Customer = require('./models/customer');
+app.get('/customers', (req, res) => {
+  Customer.list(client, {}, function (customerlist) {
     res.render('customers', {
-      layout: 'mainadmin',
-      customers: customers_data.rows
+      customerlist: customerlist,
+      layout: 'mainadmin'
     });
   });
 });
