@@ -547,9 +547,22 @@ var Dashboard = require('./models/dashboard');
 // Trial
 app.get('/admin/home', function (req, res) { // product list
   Dashboard.topTenCustomersWithMostOrders(client, function (topTenCustomersWithMostOrders) {
-    res.render('adminhome', {
-      topTenCustomersWithMostOrders: topTenCustomersWithMostOrders,
-      layout: 'mainadmin'
+    Dashboard.topTenCustomersWithHighestPayment(client, function (topTenCustomersWithHighestPayment) {
+      Dashboard.topTenMostOrderedProducts(client, function (topTenMostOrderedProducts) {
+        Dashboard.topTenLeastOrderedProducts(client, function (topTenLeastOrderedProducts) {
+          Dashboard.topThreeMostOrderedBrands(client, function (topThreeMostOrderedBrands) {
+            res.render('adminhome', {
+              topTenCustomersWithMostOrders: topTenCustomersWithMostOrders,
+              topTenCustomersWithHighestPayment: topTenCustomersWithHighestPayment,
+              topTenMostOrderedProducts: topTenMostOrderedProducts,
+              topTenLeastOrderedProducts: topTenLeastOrderedProducts,
+              topThreeMostOrderedBrands: topThreeMostOrderedBrands,
+
+              layout: 'mainadmin'
+            });
+          });
+        });
+      });
     });
   });
 });

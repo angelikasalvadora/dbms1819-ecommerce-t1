@@ -78,6 +78,7 @@
       </div>
     </div>
 
+<!-- Most Orders -->
 <br>
 <div class="container">
   <h3>Top 10 Costumers with Most Orders</h3>
@@ -110,6 +111,143 @@
     </tbody>
   </table>
 </div>
+<!-- Most Orders -->
+
+<!-- Highest Payment -->
+<br>
+<div class="container">
+  <h3>Top 10 Costumers with Highest Payment</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th class="text-center">
+          <label>Name</label>
+        </th>
+        <th class="text-center">
+          <label>Email</label>
+        </th>
+        <th class="text-center">
+          <label>Total Payment</label>
+        </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {{#each topTenCustomersWithHighestPayment}}
+        <tr>
+          <td class="text-center">{{this.first_name}} {{this.last_name}}</td>
+          <td class="text-center">{{this.email}}</td>
+          <td class="text-center">₱ {{this.total_payment}}</td>
+
+
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<!-- Highest Payment -->
+
+<!-- Most Ordered product -->
+<br>
+<div class="container">
+  <h3>Top 10 Most Ordered Product</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th class="text-center">
+          <label>Product Name</label>
+        </th>
+        <th class="text-center">
+          <label>Number of Orders</label>
+        </th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+           {{#each topTenMostOrderedProducts}}
+        <tr>
+          <td class="text-center">    {{this.product_name}}</td>
+          <td class="text-center">    {{this.number_of_orders}}</td>
+
+
+
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<!-- end of most ordered product -->
+
+<!-- least ordered product -->
+
+<br>
+<div class="container">
+  <h3>Top 10 Least Ordered Product</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th class="text-center">
+          <label>Product Name</label>
+        </th>
+        <th class="text-center">
+          <label>Number of Orders</label>
+        </th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+            {{#each topTenLeastOrderedProducts}}
+        <tr>
+          <td class="text-center">    {{this.product_name}}</td>
+          <td class="text-center">    {{this.number_of_orders}}</td>
+
+
+
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<!-- end of least ordered product -->
+
+<!-- Most Ordered Brands -->
+<br>
+<div class="container">
+  <h3>Top 3 Most Ordered Brands</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th class="text-center">
+          <label>Brand Name</label>
+        </th>
+        <th class="text-center">
+          <label>Number of Orders</label>
+        </th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+          {{#each topThreeMostOrderedBrands}}
+        <tr>
+          <td class="text-center">    {{this.brand_name}}</td>
+          <td class="text-center">    {{this.number_of_orders}}</td>
+
+
+
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<!-- End of Most Ordered  -->
+
 
   </div>
   <!-- /.container-fluid -->
