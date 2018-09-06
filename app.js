@@ -538,10 +538,22 @@ app.post('/customers', function (req, res) {
   res.redirect('/customer/' + req.body.customer_id);
 });
 
-app.get('/admin/home', function (req, res) {
+/* app.get('/admin/home', function (req, res) {
   res.render('adminhome', { layout: 'mainadmin' });
-});
+}); */
 
+var Dashboard = require('./models/dashboard');
+
+// Trial
+app.get('/admin/home', function (req, res) { // product list
+  Dashboard.topTenCustomersWithMostOrders(client, function (topTenCustomersWithMostOrders) {
+    res.render('adminhome', {
+      topTenCustomersWithMostOrders: topTenCustomersWithMostOrders,
+      layout: 'mainadmin'
+    });
+  });
+});
+// end of trial
 app.get('/products/update', function (req, res) {
   res.render('viewupdate', { layout: 'mainadmin' });
 });
