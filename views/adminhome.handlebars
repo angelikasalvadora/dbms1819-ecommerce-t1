@@ -282,6 +282,33 @@
 </div>
 
 <!-- end of top 3 categories -->
+
+<!-- total sales in last 7 days -->
+<br>
+<div class="container">
+  <h3>Total Sales in Last 7 Days</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th class="text-center">
+          <label>Amount</label>
+        </th>
+
+
+
+      </tr>
+    </thead>
+    <tbody>
+          {{#each totalSalesInTheLastSevenDays}}
+        <tr>
+          <td class="text-center">    {{total_sales_for_seven_days}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<!-- end of total sales in last 7 days -->
   </div>
   <!-- /.container-fluid -->
 

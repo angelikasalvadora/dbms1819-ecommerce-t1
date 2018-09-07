@@ -134,6 +134,23 @@ var Dashboard = {
       console.log(data.rows);
       callback(data.rows);
     });
+  },
+  totalSalesInTheLastSevenDays: function (client, callback) {
+    const query = `
+     SELECT SUM(orders.quantity*products.price) AS total_sales_for_seven_days
+     FROM orders
+     INNER JOIN products
+     ON products.id = orders.product_id
+     INNER JOIN customers
+     ON customers.id = orders.customer_id
+     WHERE order_date
+     BETWEEN CURRENT_DATE - INTERVAL '7 days'
+     AND CURRENT_DATE + INTERVAL '1 days'
+   `;
+    client.query(query, (req, data) => {
+      console.log(data.rows);
+      callback(data.rows);
+    });
   }
 
 };

@@ -52,7 +52,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 const Product = require('./models/product');
+const Brands = require('./models/brand');
+var Category = require('./models/category');
+const Orders = require('./models/order');
+const Customer = require('./models/customer');
+var Dashboard = require('./models/dashboard');
 
+// Product Home Client
 app.get('/', (req, res) => {
   Product.list(client, {}, function (products) {
     res.render('home', {
@@ -61,6 +67,7 @@ app.get('/', (req, res) => {
   });
 });
 
+// Update Product Admin
 app.get('/products/update', function (req, res) {
   client.query('SELECT products.id AS proid,products.product_name AS proim,products.product_description AS prodec,products.tagline AS protag,products.price AS propri,products.warranty AS prowar,products.images AS proimage,products_category.name AS catname ,brands.name AS bname FROM products INNER JOIN brands ON products.brand_id = brands.id INNER JOIN products_category ON products.category_id = products_category.id ORDER BY products.id', (req, data) => {
     var list = [];
@@ -74,6 +81,7 @@ app.get('/products/update', function (req, res) {
   });
 });
 
+// Update Selected Product
 app.get('/products/:id', function (req, res) {
   Product.getById(client, req.params.id, function (productData) {
     res.render('products', productData);
@@ -172,7 +180,7 @@ app.post('/categories', function (req, res) { // category list with insert new c
 // category
 // create table products_category(id SERIAL PRIMARY KEY, name varchar(80));
 // This is all for Category
-var Category = require('./models/category');
+
 app.get('/categories', (req, res) => {
   Category.list(client, {}, function (categories) {
     res.render('categories', {
@@ -222,7 +230,6 @@ app.post('/brands', function (req, res) { // brand list insert
   });
 });
 
-const Brands = require('./models/brand');
 app.get('/brands', (req, res) => {
   Brands.blist(client, {}, function (brands) {
     res.render('brand', {
@@ -379,12 +386,12 @@ app.post('/details', function (req, res) {
             subject: 'NS Technohub Order Confirmation',
             text: 'Your order has been succesfully received.' + '\n\n' +
         'Order Details: ' + '\n' +
-      'Name: ' + first_name + ' ' + last_name + '\n' +
-'Address: ' + street + ' ' + municipality + '\n' +
-                    'Province: ' + province + '\n' +
-'Product ordered: ' + product_name + '\n' +
-'Quantity ordered: ' + quantity + '\n' +
-'Order Notes: ' + message + '\n'
+        'Name: ' + first_name + ' ' + last_name + '\n' +
+        'Address: ' + street + ' ' + municipality + '\n' +
+        'Province: ' + province + '\n' +
+        'Product ordered: ' + product_name + '\n' +
+        'Quantity ordered: ' + quantity + '\n' +
+        'Order Notes: ' + message + '\n'
           };
 
           // console.log(mailOptions);
@@ -396,11 +403,11 @@ app.post('/details', function (req, res) {
           });
 
           var textBody = 'Customer name: ' + first_name + ' ' + last_name + '\n' +
-'Product name: ' + product_name + '\n' +
-'Product ID: ' + product_id + '\n' +
-'Quantity: ' + quantity + '\n' +
-'Address: ' + street + ' ' + municipality + '\n' +
-'Order Notes: ' + message;
+          'Product name: ' + product_name + '\n' +
+          'Product ID: ' + product_id + '\n' +
+          'Quantity: ' + quantity + '\n' +
+          'Address: ' + street + ' ' + municipality + '\n' +
+          'Order Notes: ' + message;
 
           mailOptions = {
             to: 'nstechnohub@gmail.com',
@@ -441,13 +448,13 @@ app.post('/details', function (req, res) {
           to: req.body.email,
           subject: 'NS Technohub Order Confirmation',
           text: 'Your order has been succesfully received.' + '\n\n' +
-      'Order Details: ' + '\n' +
-      'Name: ' + first_name + ' ' + last_name + '\n' +
-      'Address: ' + street + ' ' + municipality + '\n' +
-                      'Province: ' + province + '\n' +
-       'Product ordered: ' + product_name + '\n' +
+        'Order Details: ' + '\n' +
+        'Name: ' + first_name + ' ' + last_name + '\n' +
+        'Address: ' + street + ' ' + municipality + '\n' +
+        'Province: ' + province + '\n' +
+        'Product ordered: ' + product_name + '\n' +
         'Quantity ordered: ' + quantity + '\n' +
-'Order Notes: ' + message + '\n'
+        'Order Notes: ' + message + '\n'
         };
 
         // console.log(mailOptions);
@@ -459,11 +466,11 @@ app.post('/details', function (req, res) {
         });
 
         var textBody = 'Customer name: ' + first_name + ' ' + last_name + '\n' +
-'Product name: ' + product_name + '\n' +
-'Product ID: ' + product_id + '\n' +
-'Quantity: ' + quantity + '\n' +
-'Address: ' + street + ' ' + municipality + '\n' +
-'Message request: ' + message;
+        'Product name: ' + product_name + '\n' +
+        'Product ID: ' + product_id + '\n' +
+        'Quantity: ' + quantity + '\n' +
+        'Address: ' + street + ' ' + municipality + '\n' +
+        'Message request: ' + message;
 
         mailOptions = {
           to: 'nstechnohub@gmail.com',
@@ -489,7 +496,6 @@ app.get('/details', function (req, res) {
   res.redirect('/');
 });
 
-const Orders = require('./models/order');
 app.get('/orders', (req, res) => {
   Orders.olist(client, {}, function (orders) {
     res.render('orders', {
@@ -499,7 +505,6 @@ app.get('/orders', (req, res) => {
   });
 });
 
-const Customer = require('./models/customer');
 app.get('/customers', (req, res) => {
   Customer.list(client, {}, function (customerlist) {
     res.render('customers', {
@@ -542,8 +547,6 @@ app.post('/customers', function (req, res) {
   res.render('adminhome', { layout: 'mainadmin' });
 }); */
 
-var Dashboard = require('./models/dashboard');
-
 // Trial
 app.get('/admin/home', function (req, res) { // product list
   Dashboard.topTenCustomersWithMostOrders(client, function (topTenCustomersWithMostOrders) {
@@ -552,14 +555,17 @@ app.get('/admin/home', function (req, res) { // product list
         Dashboard.topTenLeastOrderedProducts(client, function (topTenLeastOrderedProducts) {
           Dashboard.topThreeMostOrderedBrands(client, function (topThreeMostOrderedBrands) {
             Dashboard.topThreeMostOrderedCategories(client, function (topThreeMostOrderedCategories) {
-              res.render('adminhome', {
-                topTenCustomersWithMostOrders: topTenCustomersWithMostOrders,
-                topTenCustomersWithHighestPayment: topTenCustomersWithHighestPayment,
-                topTenMostOrderedProducts: topTenMostOrderedProducts,
-                topTenLeastOrderedProducts: topTenLeastOrderedProducts,
-                topThreeMostOrderedBrands: topThreeMostOrderedBrands,
-                topThreeMostOrderedCategories: topThreeMostOrderedCategories,
-                layout: 'mainadmin'
+              Dashboard.totalSalesInTheLastSevenDays(client, function (totalSalesInTheLastSevenDays) {
+                res.render('adminhome', {
+                  topTenCustomersWithMostOrders: topTenCustomersWithMostOrders,
+                  topTenCustomersWithHighestPayment: topTenCustomersWithHighestPayment,
+                  topTenMostOrderedProducts: topTenMostOrderedProducts,
+                  topTenLeastOrderedProducts: topTenLeastOrderedProducts,
+                  topThreeMostOrderedBrands: topThreeMostOrderedBrands,
+                  topThreeMostOrderedCategories: topThreeMostOrderedCategories,
+                  totalSalesInTheLastSevenDays: totalSalesInTheLastSevenDays,
+                  layout: 'mainadmin'
+                });
               });
             });
           });
