@@ -551,14 +551,16 @@ app.get('/admin/home', function (req, res) { // product list
       Dashboard.topTenMostOrderedProducts(client, function (topTenMostOrderedProducts) {
         Dashboard.topTenLeastOrderedProducts(client, function (topTenLeastOrderedProducts) {
           Dashboard.topThreeMostOrderedBrands(client, function (topThreeMostOrderedBrands) {
-            res.render('adminhome', {
-              topTenCustomersWithMostOrders: topTenCustomersWithMostOrders,
-              topTenCustomersWithHighestPayment: topTenCustomersWithHighestPayment,
-              topTenMostOrderedProducts: topTenMostOrderedProducts,
-              topTenLeastOrderedProducts: topTenLeastOrderedProducts,
-              topThreeMostOrderedBrands: topThreeMostOrderedBrands,
-
-              layout: 'mainadmin'
+            Dashboard.topThreeMostOrderedCategories(client, function (topThreeMostOrderedCategories) {
+              res.render('adminhome', {
+                topTenCustomersWithMostOrders: topTenCustomersWithMostOrders,
+                topTenCustomersWithHighestPayment: topTenCustomersWithHighestPayment,
+                topTenMostOrderedProducts: topTenMostOrderedProducts,
+                topTenLeastOrderedProducts: topTenLeastOrderedProducts,
+                topThreeMostOrderedBrands: topThreeMostOrderedBrands,
+                topThreeMostOrderedCategories: topThreeMostOrderedCategories,
+                layout: 'mainadmin'
+              });
             });
           });
         });

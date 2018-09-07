@@ -248,7 +248,40 @@
 </div>
 <!-- End of Most Ordered  -->
 
+<!-- top 3 categories -->
 
+<br>
+<div class="container">
+  <h3>Top 3 Most Ordered Categories</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+
+        <th class="text-center">
+          <label>Category Name</label>
+        </th>
+        <th class="text-center">
+          <label>Number of Orders</label>
+        </th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+          {{#each topThreeMostOrderedCategories}}
+        <tr>
+          <td class="text-center">    {{this.category_name}}</td>
+          <td class="text-center">    {{this.number_of_orders}}</td>
+
+
+
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<!-- end of top 3 categories -->
   </div>
   <!-- /.container-fluid -->
 

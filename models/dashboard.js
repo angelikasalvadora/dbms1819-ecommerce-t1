@@ -111,6 +111,29 @@ var Dashboard = {
       console.log(data.rows);
       callback(data.rows);
     });
+  },
+  topThreeMostOrderedCategories: function (client, callback) {
+    // COUNT(product_id) AS number_of_orders
+    const query = `
+     SELECT DISTINCT
+       products_category.name AS category_name,
+       SUM(orders.quantity) AS number_of_orders
+     FROM orders
+     INNER JOIN products
+     ON products.id = orders.product_id
+     INNER JOIN products_category
+     ON products_category.id = products.category_id
+     GROUP BY
+       products_category.id
+     ORDER BY
+       number_of_orders DESC,
+       category_name ASC
+     LIMIT 3
+   `;
+    client.query(query, (req, data) => {
+      console.log(data.rows);
+      callback(data.rows);
+    });
   }
 
 };
