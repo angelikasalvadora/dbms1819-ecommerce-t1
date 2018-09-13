@@ -66,7 +66,7 @@ img.resize {
 						<td class="text-center">Php {{this.price}}</td>
 						<td class="text-center">{{this.quantity}}</td>
 						<td class="text-center">Php {{this.total}}</td>
-							<td class="text-center">{{this.order_date}}</td>
+							<td class="text-center">{{moment this.order_date local=true add='hours' amount='8' format='llll'}}</td>
 
 					</tr>
 				{{/each}}
