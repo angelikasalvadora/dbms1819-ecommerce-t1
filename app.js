@@ -4,6 +4,9 @@ var path = require('path');
 var exphbs = require('express-handlebars');
 var nodemailer = require('nodemailer');
 var {Client} = require('pg');
+const Handlebars = require('handlebars');
+const MomentHandler = require('handlebars.moment');
+MomentHandler.registerHelpers(Handlebars);
 
 var client = new Client({
   database: 'detdajekraf8p9',
@@ -66,6 +69,22 @@ app.get('/', (req, res) => {
     });
   });
 });
+
+// Authentication
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/signup', (req, res) => {
+  res.render('signup');
+});
+
+/* app.post('/signup',(req,res) => {
+          console.log('signup data',req body);
+          res.render('signup');
+        }); */
+
+// End of Authentication
 
 // Update Product Admin
 app.get('/products/update', function (req, res) {
